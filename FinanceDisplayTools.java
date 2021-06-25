@@ -30,7 +30,9 @@ public final class FinanceDisplayTools {
 	 * @return The point on the line segment which corresponds to the logarithmic position of the value passed.
 	 */
 	public static int logSlider(double value, double min_value, double max_value, double startPixel, double endPixel){
-		value=Math.log(value);min_value=Math.log(min_value);max_value=Math.log(max_value);
+		value=Math.log(value);
+		min_value=Math.log(min_value);
+		max_value=Math.log(max_value);
 		return (int)(startPixel + (endPixel-startPixel)*(value-min_value)/(max_value-min_value));
 	}
 	
