@@ -1,9 +1,9 @@
-package com.dzappz.common;
+package com.dz_fs_dev.common;
 
 import java.math.BigInteger;
 
 /**
- * @author DzAppz
+ * @author DzFSDev
  * @version 0.1
  */
 
