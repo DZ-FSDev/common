@@ -31,6 +31,6 @@ public final class StringFormatTools {
 	 * @since 15.0.2
 	 */
 	public static String uriDecode(String encoded) throws UnsupportedEncodingException {
-	    return URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString());
+	    return URLDecoder.decode(encoded, StandardCharsets.UTF_8);
 	}
 }
