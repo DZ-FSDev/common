@@ -3,15 +3,17 @@ package com.dz_fs_dev.common;
 import java.math.BigInteger;
 
 /**
+ * Non-contructable class containing different functions used to do pixel calculations and number formatting for financial dashboards and displays.
+ * 
  * @author DzFSDev
  * @version 0.1
  */
-
 public final class FinanceDisplayTools {
 	private static String[] fmt_suffixes = {""," K"," M"," B"," T"," A"," C"," D"," E"," F"," G"};
 	
 	/**
 	 * Calculates the point on a line segment which a value exists given the terminal ends representing a min and max value. Used for linear scaled data in 1D.
+	 * 
 	 * @param value	The value that should be placed between the linear line segment. 
 	 * @param min_value The value that corresponds to the start of the line segment.
 	 * @param max_value The value that corresponds to the end of the line segment.
@@ -26,6 +28,7 @@ public final class FinanceDisplayTools {
 	
 	/**
 	 * Calculates the point on a line segment which a value exists given the terminal ends representing a min and max value. Used for logarithmic scaled data in 1D.
+	 * 
 	 * @param value	The value that should be placed between the linear line segment. 
 	 * @param min_value The value that corresponds to the start of the line segment.
 	 * @param max_value The value that corresponds to the end of the line segment.
@@ -43,6 +46,7 @@ public final class FinanceDisplayTools {
 	
 	/**
 	 * Formats a double precision value into a string up to a specified precision. Rounds down.
+	 * 
 	 * @param d The double precision value to be formatted.
 	 * @param prec The number of decimal precision to return.
 	 * @return The formatted string representation.
@@ -54,6 +58,7 @@ public final class FinanceDisplayTools {
 
 	/**
 	 * Formats a {@link BigInteger} into more relatable string representation up to a specific precision.
+	 * 
 	 * @param bi The {@link BigInteger} to be formatted.
 	 * @param prec The precision of the formatted number.
 	 * @return The string representation of the formatted number.
