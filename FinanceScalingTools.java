@@ -3,13 +3,13 @@ package com.dz_fs_dev.common;
 import java.math.BigInteger;
 
 /**
- * Non-contructable class containing different functions used to do pixel calculations and number formatting for financial dashboards and displays.
+ * Non-contructable class containing different functions used to do pixel & number scaling for financial dashboards and displays.
  * 
- * @author DzFSDev
- * @since 16
- * @version 0.0.2
+ * @author DZ-FSDev
+ * @since 16.0.1
+ * @version 0.0.3
  */
-public final class FinanceDisplayTools {
+public final class FinanceScalingTools {
 	private static String[] fmt_suffixes = {""," K"," M"," B"," T"," A"," C"," D"," E"," F"," G"};
 
 	/**
@@ -25,7 +25,23 @@ public final class FinanceDisplayTools {
 	 * @since 0.0.1
 	 */
 	public static int slider(double value, double min_value, double max_value, double startPixel, double endPixel){
-		return (int)(startPixel + (endPixel-startPixel)*(value-min_value)/(max_value-min_value));
+		return (int)(startPixel + (endPixel - startPixel) * (value - min_value) / (max_value - min_value));
+	}
+	
+	/**
+	 * Calculates the value on a pixel line segment given the terminal ends representing a min and max value.
+	 * Used for linear scaled data in 1D.
+	 * 
+	 * @param position	The point on the line segment which corresponds to the linear position of the value to be calculated. 
+	 * @param min_value The value that corresponds to the start of the line segment.
+	 * @param max_value The value that corresponds to the end of the line segment.
+	 * @param startPixel The start of the line segment.
+	 * @param endPixel The end of the line segment.
+	 * @return The value that correlates with the position on a linear line segment.
+	 * @since 0.0.3
+	 */
+	public static double antiSlider(int position, double min_value, double max_value, double startPixel, double endPixel){
+		return (position - startPixel) / (endPixel-startPixel) * (max_value - min_value) + min_value;
 	}
 
 	/**
@@ -41,10 +57,10 @@ public final class FinanceDisplayTools {
 	 * @since 0.0.1
 	 */
 	public static int logSlider(double value, double min_value, double max_value, double startPixel, double endPixel){
-		value=Math.log(value);
-		min_value=Math.log(min_value);
-		max_value=Math.log(max_value);
-		return (int)(startPixel + (endPixel-startPixel)*(value-min_value)/(max_value-min_value));
+		value = Math.log(value);
+		min_value = Math.log(min_value);
+		max_value = Math.log(max_value);
+		return (int)(startPixel + (endPixel - startPixel)*(value - min_value)/(max_value - min_value));
 	}
 
 	/**
@@ -70,8 +86,8 @@ public final class FinanceDisplayTools {
 	public static String formatBigInt(BigInteger bi, int prec){
 		String ret = bi.toString();
 		if(ret.length() < prec)return ret;
-		int suf = (ret.length()-1) / 3;
-		return ret.substring(0,ret.length()-suf*3) + "." + ret.substring(ret.length()-suf*3,5) + fmt_suffixes[suf];
+		int suf = (ret.length() - 1) / 3;
+		return ret.substring(0, ret.length() - suf * 3) + "." + ret.substring(ret.length() - suf * 3, 5) + fmt_suffixes[suf];
 	}
 
 	/**
@@ -90,6 +106,6 @@ public final class FinanceDisplayTools {
 	public static String formatRatio(double numerator, double denominator, int prec) throws IllegalArgumentException{
 		if(denominator == 0)return ""+Double.NaN;
 		if(prec < 1)throw new IllegalArgumentException("fmtRatio cannot process a precision(" + prec + ") less than 1!");
-		return formatDbl(numerator/denominator*100.0, prec);
+		return formatDbl(numerator / denominator * 100.0, prec);
 	}
 }
