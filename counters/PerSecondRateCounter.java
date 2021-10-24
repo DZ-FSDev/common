@@ -1,4 +1,4 @@
-package com.dz_fs_dev.common;
+package com.dz_fs_dev.common.counters;
 
 /**
  * Thread-safe Per Second Rate Counter which employs an Exponential Moving Average with a period defined on construction.
@@ -6,11 +6,12 @@ package com.dz_fs_dev.common;
  * 
  * @author DZ-FSDev
  * @since 16.0.1
- * @version 0.0.1
+ * @version 0.0.2
  */
 public class PerSecondExponentialRateCounter {
 	private static int idGen = 0;
-	private final int id;
+	
+	private final int ID;
 	private final int emaPeriod;
 	private final double emaRate, emaRate2;
 	private double ts;
@@ -29,7 +30,7 @@ public class PerSecondExponentialRateCounter {
 		this.emaRate = 2.0 / (emaPeriod + 1.0);
 		this.emaRate2 = 1.0 - this.emaRate;
 		this.ts = System.currentTimeMillis();
-		this.id = idGen++;
+		this.ID = idGen++;
 	}
 
 	/**
@@ -70,22 +71,28 @@ public class PerSecondExponentialRateCounter {
 	/**
 	 * Polls the per second exponential moving average rate. Thread-safe.
 	 * 
-	 * @since 0.0.1
 	 * @return The per second exponential moving average rate.
+	 * @since 0.0.1
 	 */
 	public synchronized double pollPS(){
 		tock();
 		return count * 1000 / (System.currentTimeMillis()-ts);
 	}
 
+	/**
+	 * @since 0.0.2
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + ID;
 		return result;
 	}
 
+	/**
+	 * @since 0.0.2
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -93,7 +100,7 @@ public class PerSecondExponentialRateCounter {
 		if (!(obj instanceof PerSecondExponentialRateCounter))
 			return false;
 		PerSecondExponentialRateCounter other = (PerSecondExponentialRateCounter) obj;
-		if (id != other.id)
+		if (ID != other.ID)
 			return false;
 		return true;
 	}
