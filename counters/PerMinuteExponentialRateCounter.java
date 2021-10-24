@@ -1,4 +1,4 @@
-package com.dz_fs_dev.common;
+package com.dz_fs_dev.common.counters;
 
 /**
  * Thread-safe Per Minute Rate Counter which employs an Exponential Moving Average with a period defined on construction.
