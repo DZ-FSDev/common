@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  * 
  * @author DZ-FSDev
  * @since 16
- * @version 0.0.2
+ * @version 0.0.3
  */
 public final class StringFormatTools{
 	/**
@@ -70,11 +70,11 @@ public final class StringFormatTools{
 	 * @param rightLength The specified length to pad the String up to.
 	 * @return The {@link String} padded with whitespace on the right up to the specified length.
 	 * @throws IllegalArgumentException Thrown if leftLength less than 1 or rightLength less than leftLength.
-	 * @since 0.0.2
+	 * @since 0.0.3
 	 */
 	public static String leftRightPad(int leftLength, String text, int rightLength){
-		if(leftLength < 1)throw new IllegalArgumentException("leftLength cannot be less than 1! leftLength = " + leftLength);
-		if(rightLength < leftLength)throw new IllegalArgumentException("rightLength(" + rightLength + ") cannot be less than leftLength(" + leftLength + ")!");
+		if(leftLength < 1)throw new IllegalArgumentException(String.format("leftLength cannot be less than 1! leftLength = %d", leftLength));
+		if(rightLength < leftLength)throw new IllegalArgumentException(String.format("rightLength(%d) cannot be less than leftLength(%d)!", rightLength, leftLength));
 		return rightPad(leftPad(text, leftLength),rightLength);
 	}
 }
