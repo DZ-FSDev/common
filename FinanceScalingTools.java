@@ -7,11 +7,13 @@ import java.math.BigInteger;
  * 
  * @author DZ-FSDev
  * @since 16.0.1
- * @version 0.0.3
+ * @version 0.0.5
  */
 public final class FinanceScalingTools {
-	private static String[] fmt_suffixes = {""," K"," M"," B"," T"," A"," C"," D"," E"," F"," G"};
-
+	private FinanceScalingTools() {}
+	
+	private static String[] magnitudeSuffixes = {""," K"," M"," B"," T"," A"," C"," D"," E"," F"," G"};
+	
 	/**
 	 * Calculates the point on a line segment which a value exists given the terminal ends representing a min and max value.
 	 * Used for linear scaled data in 1D.
@@ -62,6 +64,22 @@ public final class FinanceScalingTools {
 		max_value = Math.log(max_value);
 		return (int)(startPixel + (endPixel - startPixel)*(value - min_value)/(max_value - min_value));
 	}
+	
+	/**
+	 * Calculates the value on a pixel line segment given the terminal ends representing a min and max value.
+	 * Used for logarithmic scaled data in 1D.
+	 * 
+	 * @param position	The point on the line segment which corresponds to the linear position of the value to be calculated. 
+	 * @param min_value The value that corresponds to the start of the line segment.
+	 * @param max_value The value that corresponds to the end of the line segment.
+	 * @param startPixel The start of the line segment.
+	 * @param endPixel The end of the line segment.
+	 * @return The value that correlates with the position on a logarithmic line segment.
+	 * @since 0.0.5
+	 */
+	public static double antiLogSlider(int position, double min_value, double max_value, double startPixel, double endPixel){
+		return Math.pow(10, (position - startPixel) * (max_value - min_value) / (endPixel - startPixel) + min_value);
+	}
 
 	/**
 	 * Formats a double precision value into a string up to a specified precision. Rounds down.
@@ -87,7 +105,7 @@ public final class FinanceScalingTools {
 		String ret = bi.toString();
 		if(ret.length() < prec)return ret;
 		int suf = (ret.length() - 1) / 3;
-		return ret.substring(0, ret.length() - suf * 3) + "." + ret.substring(ret.length() - suf * 3, 5) + fmt_suffixes[suf];
+		return ret.substring(0, ret.length() - suf * 3) + "." + ret.substring(ret.length() - suf * 3, 5) + magnitudeSuffixes[suf];
 	}
 
 	/**
