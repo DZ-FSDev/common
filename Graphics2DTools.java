@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.2
+ * @version 0.0.3
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -78,6 +78,32 @@ public final class Graphics2DTools {
 	 */
 	public static void saveAsJPG(BufferedImage bufferedImage, String fileName) throws IOException {
 		File outputfile = new File(fileName + ".jpg");
+		ImageIO.write(bufferedImage, "jpg", outputfile);
+	}
+	
+	/**
+	 * Saves a BufferedImage to a specified file as a portable network graphic.
+	 * 
+	 * @param bufferedImage The image to be saved.
+	 * @param outputfile The file to save the BufferedImage to.
+	 * @throws IOException Thrown if the file cannot be written.
+	 * @since 0.0.3
+	 */
+	public static void saveAsPNG(BufferedImage bufferedImage, File outputfile) throws IOException {
+		if(!outputfile.getName().endsWith(".png"))outputfile = new File(outputfile.getPath() + ".png");
+		ImageIO.write(bufferedImage, "png", outputfile);
+	}
+	
+	/**
+	 * Saves a BufferedImage to a specified file as a Joint Photographic Experts Group digital image.
+	 * 
+	 * @param bufferedImage The image to be saved.
+	 * @param outputfile The file to save the BufferedImage to.
+	 * @throws IOException Thrown if the file cannot be written.
+	 * @since 0.0.3
+	 */
+	public static void saveAsJPG(BufferedImage bufferedImage, File outputfile) throws IOException {
+		if(!outputfile.getName().endsWith(".jpg"))outputfile = new File(outputfile.getPath() + ".jpg");
 		ImageIO.write(bufferedImage, "jpg", outputfile);
 	}
 }
