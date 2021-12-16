@@ -22,7 +22,7 @@ import jesino.GifSequenceWriter;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.5
+ * @version 0.0.6
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -106,9 +106,9 @@ public final class Graphics2DTools {
 	/**
 	 * Saves a list of BufferedImages as a single animated GIF. The frame delay will be constant through the animation.
 	 * 
-	 * @param images The list of buffered images to be 
-	 * @param frameDdelay
-	 * @param outputFile
+	 * @param images The list of buffered images to be compiled.
+	 * @param frameDdelay The uniform delay in milliseconds between frames.
+	 * @param outputFile The file to write the output.
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws IIOException 
@@ -133,12 +133,11 @@ public final class Graphics2DTools {
 	 * Returns a byte array representing an animated GIF with frames from a list of BufferedImages.
 	 * The frame delay will be constant through the animation.
 	 * 
-	 * @param images The list of buffered images to be 
-	 * @param frameDelay
+	 * @param images The list of buffered images be compiled.
+	 * @param frameDelay The uniform delay in milliseconds between frames.
 	 * @throws IOException 
-	 * @throws FileNotFoundException 
 	 * @throws IIOException 
-	 * @since 0.0.5
+	 * @since 0.0.6
 	 */
 	public static byte[] toAnimatedGifBytes(List<BufferedImage> images, int frameDelay) throws IIOException, IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -148,7 +147,6 @@ public final class Graphics2DTools {
 				mcos, BufferedImage.TYPE_INT_ARGB, frameDelay, true);
 		
 		for(BufferedImage image : images) {
-			System.out.println(image);
 			gifWriter.writeToSequence(image);
 			
 		}
