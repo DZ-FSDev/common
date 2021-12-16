@@ -12,6 +12,8 @@ import java.util.List;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 import jesino.GifSequenceWriter;
 
@@ -20,7 +22,7 @@ import jesino.GifSequenceWriter;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.4
+ * @version 0.0.5
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -110,18 +112,51 @@ public final class Graphics2DTools {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 * @throws IIOException 
-	 * @since 0.0.4
+	 * @since 0.0.5
 	 */
 	public static void saveAsAnimatedGif(List<BufferedImage> images, int frameDdelay, File outputFile) throws IIOException, FileNotFoundException, IOException {
+		FileImageOutputStream fios;
+		
 		GifSequenceWriter gifWriter = new GifSequenceWriter(
-				new FileImageOutputStream(outputFile),
-				images.get(0).getType(), frameDdelay, true);
+				fios = new FileImageOutputStream(outputFile),
+				BufferedImage.TYPE_INT_ARGB, frameDdelay, true);
 		
 		for(BufferedImage image : images) {
 			gifWriter.writeToSequence(image);;
 		}
 		
 		gifWriter.close();
+		fios.close();
+	}
+	
+	/**
+	 * Returns a byte array representing an animated GIF with frames from a list of BufferedImages.
+	 * The frame delay will be constant through the animation.
+	 * 
+	 * @param images The list of buffered images to be 
+	 * @param frameDelay
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws IIOException 
+	 * @since 0.0.5
+	 */
+	public static byte[] toAnimatedGifBytes(List<BufferedImage> images, int frameDelay) throws IIOException, IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageOutputStream mcos = new MemoryCacheImageOutputStream(baos);
+		
+		GifSequenceWriter gifWriter = new GifSequenceWriter(
+				mcos, BufferedImage.TYPE_INT_ARGB, frameDelay, true);
+		
+		for(BufferedImage image : images) {
+			System.out.println(image);
+			gifWriter.writeToSequence(image);
+			
+		}
+		
+		gifWriter.close();
+		
+		mcos.close();
+		return baos.toByteArray();
 	}
 	
 	/**
