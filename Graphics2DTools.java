@@ -3,17 +3,24 @@ package com.dz_fs_dev.common;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+
+import jesino.GifSequenceWriter;
 
 /**
  * Non-contructable class containing different image manipulative methods for financial dashboards and displays.
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.3
+ * @version 0.0.4
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -85,25 +92,62 @@ public final class Graphics2DTools {
 	 * Saves a BufferedImage to a specified file as a portable network graphic.
 	 * 
 	 * @param bufferedImage The image to be saved.
-	 * @param outputfile The file to save the BufferedImage to.
+	 * @param outputFile The file to save the BufferedImage to.
 	 * @throws IOException Thrown if the file cannot be written.
 	 * @since 0.0.3
 	 */
-	public static void saveAsPNG(BufferedImage bufferedImage, File outputfile) throws IOException {
-		if(!outputfile.getName().endsWith(".png"))outputfile = new File(outputfile.getPath() + ".png");
-		ImageIO.write(bufferedImage, "png", outputfile);
+	public static void saveAsPNG(BufferedImage bufferedImage, File outputFile) throws IOException {
+		if(!outputFile.getName().endsWith(".png"))outputFile = new File(outputFile.getPath() + ".png");
+		ImageIO.write(bufferedImage, "png", outputFile);
+	}
+	
+	/**
+	 * Saves a list of BufferedImages as a single animated GIF. The frame delay will be constant through the animation.
+	 * 
+	 * @param images The list of buffered images to be 
+	 * @param frameDdelay
+	 * @param outputFile
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws IIOException 
+	 * @since 0.0.4
+	 */
+	public static void saveAsAnimatedGif(List<BufferedImage> images, int frameDdelay, File outputFile) throws IIOException, FileNotFoundException, IOException {
+		GifSequenceWriter gifWriter = new GifSequenceWriter(
+				new FileImageOutputStream(outputFile),
+				images.get(0).getType(), frameDdelay, true);
+		
+		for(BufferedImage image : images) {
+			gifWriter.writeToSequence(image);;
+		}
+		
+		gifWriter.close();
 	}
 	
 	/**
 	 * Saves a BufferedImage to a specified file as a Joint Photographic Experts Group digital image.
 	 * 
 	 * @param bufferedImage The image to be saved.
-	 * @param outputfile The file to save the BufferedImage to.
+	 * @param outputFile The file to save the BufferedImage to.
 	 * @throws IOException Thrown if the file cannot be written.
 	 * @since 0.0.3
 	 */
-	public static void saveAsJPG(BufferedImage bufferedImage, File outputfile) throws IOException {
-		if(!outputfile.getName().endsWith(".jpg"))outputfile = new File(outputfile.getPath() + ".jpg");
-		ImageIO.write(bufferedImage, "jpg", outputfile);
+	public static void saveAsJPG(BufferedImage bufferedImage, File outputFile) throws IOException {
+		if(!outputFile.getName().endsWith(".jpg"))outputFile = new File(outputFile.getPath() + ".jpg");
+		ImageIO.write(bufferedImage, "jpg", outputFile);
+	}
+	
+	/**
+	 * Returns a png byte array containing the data from a specified buffered image.
+	 * 
+	 * @param bufferedImage The buffered image to be converted to a byte array.
+	 * @return The png byte array.
+	 * @throws IOException Thrown if the file cannot be written.
+	 * @since 0.0.4
+	 */
+	public static byte[] toPNGbytes(BufferedImage bufferedImage) throws IOException {
+		ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+		ImageIO.write(bufferedImage, "png", byteArrayStream);
+		return byteArrayStream.toByteArray();
 	}
 }
