@@ -1,5 +1,9 @@
 package com.dz_fs_dev.common;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -22,7 +26,7 @@ import jesino.GifSequenceWriter;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.6
+ * @version 0.0.7
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -110,8 +114,8 @@ public final class Graphics2DTools {
 	 * @param frameDdelay The uniform delay in milliseconds between frames.
 	 * @param outputFile The file to write the output.
 	 * @throws IOException 
-	 * @throws FileNotFoundException 
-	 * @throws IIOException 
+	 * @throws FileNotFoundException Thrown if file cannot be written to.
+	 * @throws IIOException Thrown if the there are issues with reads or writes fail.
 	 * @since 0.0.5
 	 */
 	public static void saveAsAnimatedGif(List<BufferedImage> images, int frameDdelay, File outputFile) throws IIOException, FileNotFoundException, IOException {
@@ -136,7 +140,7 @@ public final class Graphics2DTools {
 	 * @param images The list of buffered images be compiled.
 	 * @param frameDelay The uniform delay in milliseconds between frames.
 	 * @throws IOException 
-	 * @throws IIOException 
+	 * @throws IIOException Thrown if the there are issues with reads or writes fail.
 	 * @since 0.0.6
 	 */
 	public static byte[] toAnimatedGifBytes(List<BufferedImage> images, int frameDelay) throws IIOException, IOException {
@@ -182,5 +186,54 @@ public final class Graphics2DTools {
 		ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
 		ImageIO.write(bufferedImage, "png", byteArrayStream);
 		return byteArrayStream.toByteArray();
+	}
+	
+	/**
+	 * Utility method for drawing text to the client. Functionality limited to fonts with uniform character width.
+	 * 
+	 * @param g The Graphics object tied to the image to draw the text on.
+	 * @param str The text to be drawn.
+	 * @param font The font that will be used to draw the text.
+	 * @param w The width of the boundaries for the text to be drawn on.
+	 * @param h The height of the boundaries for the text to be drawn on.
+	 * @param ox The offset in the x direction of the text to be drawn on.
+	 * @param oy The offset in the y direction of the text to be drawn on.
+	 * @since 0.0.7
+	 * @return The height of the text drawn.
+	 */
+	public static int drawText(Graphics g, String str, Font font, int w, int h, int ox, int oy){
+		int init_oy = oy;
+		//Build the str
+		g.setFont(font);
+		FontMetrics metrics = g.getFontMetrics(font);
+		int fh = metrics.getHeight(), fw = metrics.stringWidth("ABC abc")/7, cpw = w/fw - 1;
+
+		//Debugging
+		//g.drawRect(ox, oy, w, h);
+
+		for(int i = 0; i < str.length();){
+			String seg = str.substring(i, Math.min(i+cpw,str.length()));
+			if(seg.contains("\n")){
+				i += seg.indexOf("\n")+1;
+				continue;
+			}else if(seg.length() == cpw){
+				int ii = Math.max(Math.max(Math.max(seg.lastIndexOf(" "), seg.lastIndexOf(";")), seg.lastIndexOf(",")), seg.lastIndexOf("."));
+				if(ii > 0){
+					i += ii;
+					str = str.substring(0,i) + "\n" + str.substring(i+1,str.length());
+				}
+			}
+			i++;
+		}
+
+		//Draw the str
+		String[] lines = str.split("\n");
+		for(String l : lines){
+			g.setColor(Color.WHITE);
+			g.drawString(l, ox, oy += fh);
+			//System.out.println(l);
+		}
+
+		return oy - init_oy;
 	}
 }
