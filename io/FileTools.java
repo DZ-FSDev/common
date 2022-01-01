@@ -20,9 +20,7 @@ package com.dz_fs_dev.common.io;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +28,7 @@ import java.util.ArrayList;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.1
+ * @version 0.0.2
  */
 public final class FileTools {
 	private FileTools() {}
@@ -41,22 +39,10 @@ public final class FileTools {
 	 * 
 	 * @param path The specified path to read the file from.
 	 * @return A list containing the read lines from the file.
+	 * @since 0.0.2
 	 */
-	@SuppressWarnings("finally")
 	public static ArrayList<String> tryLoadFile(String path){
-		ArrayList<String> ret = new ArrayList<String>();
-
-		try (
-			FileReader myReader = new FileReader(path);
-			BufferedReader myBufferedReader = new BufferedReader(myReader);){
-			String data = myBufferedReader.readLine();
-			while(data != null){
-				ret.add(data);
-				data = myBufferedReader.readLine();
-			}
-		}finally {
-			return ret;
-		}
+		return tryLoadFile(new File(path));
 	}
 	
 	/**
@@ -65,6 +51,7 @@ public final class FileTools {
 	 * 
 	 * @param file The specified file to read.
 	 * @return A list containing the read lines from the file.
+	 * @since 0.0.1
 	 */
 	@SuppressWarnings("finally")
 	public static ArrayList<String> tryLoadFile(File file){
@@ -84,19 +71,19 @@ public final class FileTools {
 	}
 	
 	/**
+	 * Attempts to read a specified file and returns a String containing what
+	 * was read.
 	 * 
-	 * 
-	 * @param path
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @param file The specified file to read.
+	 * @return A String containing the read lines from the file.
+	 * @since 0.0.1
 	 */
 	@SuppressWarnings("finally")
-	public static String readFile(String path){
+	public static String tryReadFile(File file){
 		StringBuilder ret = new StringBuilder();
 
 		try (
-			FileReader myReader = new FileReader(path);
+			FileReader myReader = new FileReader(file);
 			BufferedReader myBufferedReader = new BufferedReader(myReader);){
 			String data = myBufferedReader.readLine();
 			while(data != null){
@@ -110,21 +97,41 @@ public final class FileTools {
 	}
 	
 	/**
+	 * Attempts to read a specified file and returns a String containing what
+	 * was read.
 	 * 
-	 * @param data
-	 * @return
+	 * @param path The specified path to read the file from.
+	 * @return A String containing the read lines from the file.
+	 * @since 0.0.2
 	 */
-	public static boolean writeToFile(String data) {
+	public static String tryReadFile(String path){
+		return tryReadFile(new File(path));
+	}
+	
+	/**
+	 * Attempts to write contents to a specified file replacing existing
+	 * contents; returning true on success. Missing directories will also be
+	 * created.
+	 * 
+	 * @param file The specified file to write to.
+	 * @param data The specified data to write to the file.
+	 * @return True if file write was successful.
+	 */
+	public static boolean tryWriteToFile(File file, String data) {
 		//TODO
 		return true;
 	}
 	
 	/**
+	 * Attempts to write contents to a specified file appending to existing
+	 * contents; returning true on success. Missing directories will also be
+	 * created.
 	 * 
-	 * @param data
-	 * @return
+	 * @param file The specified file to append to.
+	 * @param data The specified data to append to the file.
+	 * @return True if file write was successful; false otherwise.
 	 */
-	public static boolean appendToFile(String data) {
+	public static boolean appendToFile(File file, String data) {
 		//TODO
 		return true;
 	}
