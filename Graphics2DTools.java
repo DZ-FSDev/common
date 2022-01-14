@@ -1,3 +1,21 @@
+/*  Original Licensing Copyright
+ * 
+ *  Image manipulation methods for financial dashboards and displays.
+ *  Copyright (C) 2021  DZ-FSDev
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.dz_fs_dev.common;
 
 import java.awt.Color;
@@ -6,6 +24,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,11 +41,11 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
 import jesino.GifSequenceWriter;
 
 /**
- * Non-contructable class containing different image manipulative methods for financial dashboards and displays.
+ * Utility class containing different image manipulative methods for financial dashboards and displays.
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.7
+ * @version 0.0.8
  */
 public final class Graphics2DTools {
 	private Graphics2DTools() {}
@@ -198,8 +217,8 @@ public final class Graphics2DTools {
 	 * @param h The height of the boundaries for the text to be drawn on.
 	 * @param ox The offset in the x direction of the text to be drawn on.
 	 * @param oy The offset in the y direction of the text to be drawn on.
-	 * @since 0.0.7
 	 * @return The height of the text drawn.
+	 * @since 0.0.7
 	 */
 	public static int drawText(Graphics g, String str, Font font, int w, int h, int ox, int oy){
 		int init_oy = oy;
@@ -235,5 +254,22 @@ public final class Graphics2DTools {
 		}
 
 		return oy - init_oy;
+	}
+	
+	/**
+	 * Rotates an image retaining lines and parallelism at the cost of distances and angles between objects.
+	 * 
+	 * @param bi The specified buffered image to undergo rotation.
+	 * @param degrees The specified rotation to be applied.
+	 * @since 0.0.8
+	 */
+	public static void rotateImageEuclidianAffine(BufferedImage bi, double degrees) {
+		double rotationRequired = Math.toRadians(degrees);
+		double locationX = bi.getWidth() / 2;
+		double locationY = bi.getHeight() / 2;
+		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BICUBIC);
+		
+		bi.getGraphics().drawImage(op.filter(bi, null), 0, 0, null);
 	}
 }
