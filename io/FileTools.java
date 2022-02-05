@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.2
+ * @version 0.0.3
  */
 public final class FileTools {
 	private FileTools() {}
@@ -111,28 +111,64 @@ public final class FileTools {
 	/**
 	 * Attempts to write contents to a specified file replacing existing
 	 * contents; returning true on success. Missing directories will also be
-	 * created.
+	 * created. If the file exists, it will be overwritten.
 	 * 
 	 * @param file The specified file to write to.
 	 * @param data The specified data to write to the file.
 	 * @return True if file write was successful.
+	 * @since 0.0.3
 	 */
-	public static boolean tryWriteToFile(File file, String data) {
+	public static boolean tryWriteFile(File file, String data) {
 		//TODO
+		file.mkdirs();
 		return true;
 	}
 	
 	/**
 	 * Attempts to write contents to a specified file appending to existing
 	 * contents; returning true on success. Missing directories will also be
-	 * created.
+	 * created. If the file exists, it will be overwritten.
 	 * 
 	 * @param file The specified file to append to.
 	 * @param data The specified data to append to the file.
 	 * @return True if file write was successful; false otherwise.
+	 * @since 0.0.3
+	 */
+	public static boolean writeFile(File file, String data) {
+		//TODO
+		file.mkdirs();
+		return true;
+	}
+	
+	/**
+	 * Attempts to write contents to a specified file replacing existing
+	 * contents; returning true on success. Missing directories will also be
+	 * created. If the file exists, The data will be added to the end.
+	 * 
+	 * @param file The specified file to write to.
+	 * @param data The specified data to write to the file.
+	 * @return True if file write was successful.
+	 * @since 0.0.3
+	 */
+	public static boolean tryAppendToFile(File file, String data) {
+		//TODO
+		file.mkdirs();
+		return true;
+	}
+	
+	/**
+	 * Attempts to write contents to a specified file appending to existing
+	 * contents; returning true on success. Missing directories will also be
+	 * created. If the file exists, The data will be added to the end.
+	 * 
+	 * @param file The specified file to append to.
+	 * @param data The specified data to append to the file.
+	 * @return True if file write was successful; false otherwise.
+	 * @since 0.0.3
 	 */
 	public static boolean appendToFile(File file, String data) {
 		//TODO
+		file.mkdirs();
 		return true;
 	}
 }
