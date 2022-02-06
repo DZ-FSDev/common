@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper; 
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import static com.dz_fs_dev.common.io.FileTools.tryWriteToFile;
+import static com.dz_fs_dev.common.io.FileTools.tryWriteFile;
 import static com.dz_fs_dev.common.io.FileTools.tryReadFile;
 
 /**
@@ -37,7 +37,7 @@ import static com.dz_fs_dev.common.io.FileTools.tryReadFile;
  * 
  * @author DZ-FSDev
  * @since 17.0.1
- * @version 0.0.5
+ * @version 0.0.6
  */
 public class LocalPersistance<T extends Serializable>{
 	private T obj;
@@ -85,12 +85,13 @@ public class LocalPersistance<T extends Serializable>{
 	 * {@value LocalPersistance#saveDirectory} directory.
 	 * 
 	 * @throws JsonProcessingException Thrown if object serialization failed.
+	 * @since 0.0.6
 	 */
 	public void persist() throws JsonProcessingException {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String json = ow.writeValueAsString(this.getObj());
 
-		tryWriteToFile(this.getFile(), json);
+		tryWriteFile(this.getFile(), json);
 	}
 
 	/**
