@@ -22,4 +22,19 @@ namespace COM.DZFSDev.Tests
             Assert.AreEqual(expected, actual);
         }
     }
+    
+    [DataTestMethod]
+    [TestCategory("Exceptions")]
+    [DataRow(typeof(Exception))]
+    public void HolyCow(Type type)
+    {
+        Action action = () => throw new Exception();
+
+        typeof(Assert).GetMethod("ThrowsException", new Type[] { typeof(Action) })
+            .MakeGenericMethod(type)
+            .Invoke(null, new object[]
+            {
+                action
+            });
+    }
 }
