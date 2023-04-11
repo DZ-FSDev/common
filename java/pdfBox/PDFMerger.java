@@ -6,8 +6,22 @@ import java.util.List;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 
+/**
+ * Defines a list of input PDF files to be merged (inputFiles), and the output
+ * merged PDF file (outputFile). Instantiates an instance of PDFMergerUtility
+ * from Apache PDFBox, add the input PDF files to be merged using addSource()
+ * method, set the output merged PDF file using setDestinationFileName()
+ * method, and finally call mergeDocuments() method to perform the PDF merging.
+ * 
+ * @version 0.0.1
+ * @author DZ-FSDev
+ */
 public class PDFMerger {
-
+    /**
+     * Main method to merge PDF files.
+     *
+     * @param args Command-line arguments (not used in this example).
+     */
     public static void main(String[] args) {
         try {
             // Input PDF files to be merged
